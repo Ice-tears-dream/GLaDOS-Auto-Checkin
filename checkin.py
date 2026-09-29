@@ -86,14 +86,14 @@ def mask_cookie(cookie: str) -> str:
         text = text[:3990] + "..."
 
 def validate_cookie(cookie: str) -> Tuple[bool, str]:
-    """验证 Cookie 是否包含必要字段"""
+    """验证 Cookie 是否包含必要字段（新版 gld:sess，兼容旧版 koa:sess）"""
     if not cookie or not cookie.strip():
         return False, "Cookie 为空"
     cookie = cookie.strip()
-    if "koa:sess" not in cookie:
-        return False, "Cookie 缺少必要字段: koa:sess"
-    if "koa:sess.sig" not in cookie:
-        return False, "Cookie 缺少必要字段: koa:sess.sig"
+    if "gld:sess=" not in cookie and "koa:sess=" not in cookie:
+        return False, "Cookie 缺少必要字段: gld:sess（旧版为 koa:sess）"
+    if "gld:sess.sig=" not in cookie and "koa:sess.sig=" not in cookie:
+        return False, "Cookie 缺少必要字段: gld:sess.sig（旧版为 koa:sess.sig）"
     return True, ""
 
 
